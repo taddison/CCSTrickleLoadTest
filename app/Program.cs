@@ -19,11 +19,12 @@ namespace app
             var results = new StringBuilder();
             results.AppendLine("Time,TargetRows,ThreadCount,BatchSize,ElapsedMilliseconds");
 
-            var targetRows = 100000;
+            var targetRows = 1000000;
 
-            var threads = new int[] { 1, 2, 4, 8, 16};
-            var batchSizes = new int[] { /*1, 10,*/ 100, 1000, 10000, 100000, 1000000 };
-            var repeats = 10;
+            //var threads = new int[] { 1, 2, 4, 8, 16};
+            var threads = Enumerable.Range(1, 10).ToArray();
+            var batchSizes = new int[] { /*1, 10, 100, */ 1000, 10000, 100000, 1000000 };
+            var repeats = 5;
             
             var combos = from thread in threads
                          from batchSize in batchSizes
