@@ -10,6 +10,8 @@ alter database CCSTrickleLoad add filegroup CCSTrickleLoadIMO contains memory_op
 go
 alter database CCSTrickleLoad add file ( name = 'CCSTrickleLoad_imo', filename = 'C:\Program Files\Microsoft SQL Server\MSSQL13.MSSQLSERVER\MSSQL\DATA\CCSTrickleLoad.imo' ) to filegroup CCSTrickleLoadIMO
 go
+alter database CCSTrickleLoad set recovery simple;
+go
 use CCSTrickleLoad
 go
 create table CCSTrickle
