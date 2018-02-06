@@ -17,13 +17,13 @@ namespace app
             var connectionString = "server=localhost;initial catalog=CCSTrickleLoad;integrated security=sspi";
             var outFileName = $@"c:\temp\TVPResults_{DateTime.UtcNow.ToString("yyyyMMddHHmmss")}.csv";
             var results = new StringBuilder();
-            results.AppendLine("Time,TargetRows,ThreadCount,BatchSize,ElapsedMilliseconds");
+            results.AppendLine("Time,ActualRows,ThreadCount,BatchSize,ElapsedMilliseconds");
 
             var targetRows = 1000000;
 
             //var threads = new int[] { 1, 2, 4, 8, 16};
             var threads = Enumerable.Range(1, 10).ToArray();
-            var batchSizes = new int[] { /*1, 10, 100, */ 1000, 10000, 100000, 1000000 };
+            var batchSizes = new int[] { /*1, 10, 100,  1000, */10000/*, 100000, 1000000*/ };
             var repeats = 5;
             
             var combos = from thread in threads
@@ -70,8 +70,8 @@ namespace app
                     RunInnerLoop(loopId, combo.BatchSize, batches);
                 });
                 sw.Stop();
-                Console.WriteLine($"{targetRows} total rows, {combo.ThreadCount} threads, {combo.BatchSize} per batch for {batches} batches per thread. {sw.ElapsedMilliseconds}ms total run time.");
-                results.AppendLine($"{DateTime.UtcNow},{targetRows},{combo.ThreadCount},{combo.BatchSize},{sw.ElapsedMilliseconds}");
+                Console.WriteLine($"{batches * combo.BatchSize * combo.ThreadCount} actual rows, {combo.ThreadCount} threads, {combo.BatchSize} per batch for {batches} batches per thread. {sw.ElapsedMilliseconds}ms total run time.");
+                results.AppendLine($"{DateTime.UtcNow},{batches * combo.BatchSize * combo.ThreadCount},{combo.ThreadCount},{combo.BatchSize},{sw.ElapsedMilliseconds}");
             }
 
             System.IO.File.WriteAllText(outFileName, results.ToString());
